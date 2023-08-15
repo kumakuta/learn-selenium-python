@@ -6,7 +6,7 @@ def username_fetcher(self, a):
     elif a == "invalid":
         self.username = "not_a_username"
 
-def password_fetcher(self, a):
+def password_fetcher(self, a=""):
     if a == "valid":
         self.password = "secret_sauce"
     elif a == "invalid":
