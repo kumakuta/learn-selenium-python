@@ -10,26 +10,24 @@ class OpenSauceLogin(unittest.TestCase):
         driver_setting(self)
 
     def test_normal_login(self): #As user with valid credentials, I can login to Saucedemo site
-        #validaccount(self) #import valid credentials
-        username_fetcher(self, "valid") #fetch legit username
-        password_fetcher(self, "valid") #fetch legit password
+        username_fetcher(self, "valid") #fetch valid username
+        password_fetcher(self, "valid") #fetch valid password
         loginutils(self) #import login steps
         self.assertIn("/inventory.html", self.driver.current_url) #Assert url contains "inventory.html" which indicates user successfully login and redirected to inventory page
 
     def test_invalid_username_login(self): #As user with invalid username, I can not login to Saucedemo site
-        #invalidaccount_password(self) #import valid username but invalid password
         username_fetcher(self, "invalid") #fetch invalid username
-        password_fetcher(self, "valid") #fetch legit password
+        password_fetcher(self, "valid") #fetch valid password
         loginutils(self) #import login steps
         error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3') #keeping error message as variable to be compared
         self.assertIn("Username and password do not match any user in this service", error_message.text) #assert that the page contains error message as provided
 
-    def test_invalid_password_login(self):
-        username_fetcher(self, "valid")
-        password_fetcher(self, "invalid")
-        loginutils(self)
-        error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3')
-        self.assertIn("Username and password do not match any user in this service", error_message.text)
+    def test_invalid_password_login(self): #as user with invalid password, I can not login to Saucedemo site
+        username_fetcher(self, "valid") #fetch valid username
+        password_fetcher(self, "invalid") #fetch invalid password
+        loginutils(self) #import login steps
+        error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3') #keeping error message as variable to be compared
+        self.assertIn("Username and password do not match any user in this service", error_message.text) #assert that the page contains error message as provided
     
     def tearDown(self):
         now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
