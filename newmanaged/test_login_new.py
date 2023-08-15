@@ -29,13 +29,19 @@ class OpenSauceLogin(unittest.TestCase):
         error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3') #keeping error message as variable to be compared
         self.assertIn("Username and password do not match any user in this service", error_message.text) #assert that the page contains error message as provided
 
-    def test_no_username(self):
-        #self.login_form = self.driver.find_element(By.XPATH, '//*[@id="user-name"]')
-        #self.login_form.submit()
+    def test_no_credentials(self):
         l = self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div[1]/div/div/form/input")
         self.driver.execute_script("arguments[0].click();", l)
         error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3') #keeping error message as variable to be compared
         self.assertIn("Username is required", error_message.text) #assert that the page contains error message as provided
+
+    def test_no_password(self):
+        username_fetcher(self, "valid")
+        self.login_form = self.driver.find_element(By.XPATH, '//*[@id="user-name"]') #Tap on user name 
+        self.login_form.send_keys(self.username) #Input user name
+        self.login_form.submit() #Submit login form
+        error_message = self.driver.find_element(By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3') #keeping error message as variable to be compared
+        self.assertIn("Password is required", error_message.text) #assert that the page contains error message as provided
     
     def tearDown(self):
         now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
